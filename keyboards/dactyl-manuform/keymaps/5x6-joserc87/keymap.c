@@ -10,6 +10,7 @@ extern keymap_config_t keymap_config;
 // entirely and just use numbers.
 #define _QWERTY 0
 #define _FN   1
+#define _WM   2
 
 // Fillers to make layering more clear
 #define _______ KC_TRNS
@@ -53,6 +54,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                          _______,  _______,
         KC_SPC, LT(_FN, KC_BSPC), 
         CTL_T(KC_PGUP), KC_PGDN,
+        KC_LALT, KC_LGUI),
+[_WM] = KEYMAP_5x6(
+  // left hand
+   KC_ESC,    LGUI(KC_1),    LGUI(KC_2),    LGUI(KC_3),   LGUI(KC_4),   LGUI(KC_5), 
+   KC_GRV,    LGUI(KC_Q),    LGUI(KC_W),    LGUI(KC_E),   LGUI(KC_R),   LGUI(KC_T),
+   KC_TAB,    LGUI(KC_A),    LGUI(KC_S),    LGUI(KC_D),   LGUI(KC_F),   LGUI(KC_G),
+   KC_LSHIFT, LGUI(KC_Z),    LGUI(KC_X),    LGUI(KC_C),   LGUI(KC_V),   LGUI(KC_B),
+                       KC_TAB,  KC_BSLS,
+                               LGUI(KC_ENTER), KC_LSFT, 
+                               KC_SPC,   KC_RGUI,
+                               KC_DEL, KC_LALT,
+        // right hand
+                     LGUI(KC_6),    LGUI(KC_7),   LGUI(KC_8),    LGUI(KC_9),    LGUI(KC_0),    LGUI(KC_MINS),
+                     LGUI(KC_Y),    LGUI(KC_U),   LGUI(KC_I),    LGUI(KC_O),    LGUI(KC_P),    LGUI(KC_EQL),
+                     LGUI(KC_H),    LGUI(KC_J),   LGUI(KC_K),    LGUI(KC_L),    LGUI(KC_SCLN), LGUI(KC_QUOT), 
+                     LGUI(KC_N),    LGUI(KC_M),   LGUI(KC_COMM), LGUI(KC_DOT),  LGUI(KC_SLSH), KC_RSHIFT,
+                                      KC_LBRC, KC_RBRC,
+        CTL_T(KC_SPC), LT(_WM, KC_BSPC), 
+        ALT_T(KC_ESC), GUI_T(KC_ESC),
         KC_LALT, KC_LGUI),
 };
 
