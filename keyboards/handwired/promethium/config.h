@@ -15,32 +15,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
 #include "config_common.h"
 
-#define USB_VENDOR_ID_LENOVO            0x17ef
-#define USB_DEVICE_ID_LENOVO_TPKBD      0x6009
-#define USB_DEVICE_ID_LENOVO_CUSBKBD    0x6047
-#define USB_DEVICE_ID_LENOVO_CBTKBD     0x6048
-#define USB_DEVICE_ID_LENOVO_TPPRODOCK  0x6067
-
 /* USB Device descriptor parameter */
-#define VENDOR_ID       USB_VENDOR_ID_LENOVO
-#define PRODUCT_ID      USB_DEVICE_ID_LENOVO_CBTKBD
+#define VENDOR_ID       0x17EF // Lenovo
+//#define PRODUCT_ID    0x6009 // ThinkPad Keyboard with TrackPoint
+//#define PRODUCT_ID    0x6047 // ThinkPad Compact USB Keyboard with TrackPoint
+#define PRODUCT_ID      0x6048 // ThinkPad Compact Bluetooth Keyboard with TrackPoint
+//#define PRODUCT_ID    0x6067 // ThinkPad Pro Docking Station
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    Priyadi
 #define PRODUCT         Promethium Keyboard
 #define DESCRIPTION
 
 /* key matrix size */
-#define MATRIX_ROWS 8
 #define MATRIX_COLS 6
+#define MATRIX_ROWS 9
 
 /* default pin-out */
-#define MATRIX_COL_PINS { B6, B7, D6, C7, F6, F7 }
-#define MATRIX_ROW_PINS { D7, C6, D0, D1, F5, F4, F1, F0 }
+#define MATRIX_COL_PINS { F4, F1, F0, D6, D0, D1 }
+#define MATRIX_ROW_PINS { F5, F6, F7 }
+#define TRACKPOINT_PINS { B7, B6, D7 }
 #define UNUSED_PINS
 
 /*
@@ -60,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define BACKLIGHT_LEVELS 3
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
-#define DEBOUNCING_DELAY 5
+#define DEBOUNCE 5
 
 /* define if matrix has ghost (lacks anti-ghosting diodes) */
 //#define MATRIX_HAS_GHOST
@@ -95,7 +92,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* key combination for command */
 #define IS_COMMAND() ( \
-    keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT) | MOD_BIT(KC_LCTRL) | MOD_BIT(KC_RCTRL)) \
+    get_mods() == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT) | MOD_BIT(KC_LCTRL) | MOD_BIT(KC_RCTRL)) \
 )
 
 /* control how magic key switches layers */
@@ -152,45 +149,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_MACRO
 //#define NO_ACTION_FUNCTION
 
-#define PS2_INIT_DELAY 2000
+#define PS2_MOUSE_INIT_DELAY 2000
 #define BATTERY_PIN 9
 #define BATTERY_POLL 30000
 #define MAX_VOLTAGE 4.2
 #define MIN_VOLTAGE 3.2
 
-#define KEYMAP( \
-    k11, k12, k13, k14, k15, k16, k17, k18, k19, k1a, k1b, k1c, \
-    k21, k22, k23, k24, k25, k26, k27, k28, k29, k2a, k2b, k2c, \
-    k31, k32, k33, k34, k35, k36, k37, k38, k39, k3a, k3b, k3c, \
-    k41, k42, k43, k44, k45, k46, k47, k48, k49, k4a, k4b, k4c \
-) \
-{ \
-    {k11, k12, k13, k14, k15, k16}, \
-    {k21, k22, k23, k24, k25, k26}, \
-    {k31, k32, k33, k34, k35, k36}, \
-    {k41, k42, k43, k44, k45, k46}, \
-    {k17, k18, k19, k1a, k1b, k1c}, \
-    {k27, k28, k29, k2a, k2b, k2c}, \
-    {k37, k38, k39, k3a, k3b, k3c}, \
-    {k47, k48, k49, k4a, k4b, k4c} \
-}
-
 #ifndef __ASSEMBLER__ // assembler doesn't like enum in .h file
 enum led_sequence {
+  LED_IND_LINUX,
+  LED_IND_APPLE,
+  LED_IND_WINDOWS,
+  LED_IND_QWERTY,
+  LED_IND_ALT,
+  LED_IND_AUDIO,
   LED_IND_BLUETOOTH,
   LED_IND_USB,
-  LED_IND_BATTERY,
 
+  LED_IND_BATTERY,
+  LED_IND_CAPSLOCK,
+  LED_IND_GUI,
   LED_IND_FUN,
   LED_IND_NUM,
+  LED_IND_PUNC,
   LED_IND_EMOJI,
+  LED_IND_GREEK,
 
   LED_BKSP,
   LED_ENT,
   LED_RSFT,
   LED_RCTL,
 
-  LED_RGUI,
+  LED_RALT,
   LED_SLSH,
   LED_SCLN,
   LED_P,
@@ -198,9 +188,9 @@ enum led_sequence {
   LED_O,
   LED_L,
   LED_DOT,
-  LED_RALT,
+  LED_RGUI,
 
-  LED_EMOJI,
+  LED_GREEK,
   LED_COMM,
   LED_K,
   LED_I,
@@ -219,35 +209,35 @@ enum led_sequence {
   LED_TRACKPOINT2,
   LED_TRACKPOINT1,
 
-  LED_LSPC,
-  LED_B,
-  LED_G,
   LED_T,
+  LED_G,
+  LED_B,
+  LED_LSPC,
 
-  LED_R,
-  LED_F,
-  LED_V,
   LED_NUM,
+  LED_V,
+  LED_F,
+  LED_R,
 
-  LED_PUNC,
-  LED_C,
-  LED_D,
   LED_E,
-
-  LED_W,
-  LED_S,
-  LED_X,
-  LED_LALT,
+  LED_D,
+  LED_C,
+  LED_EMPTY,
 
   LED_LGUI,
-  LED_Z,
-  LED_A,
-  LED_Q,
+  LED_X,
+  LED_S,
+  LED_W,
 
-  LED_TAB,
-  LED_ESC,
-  LED_LSFT,
+  LED_Q,
+  LED_A,
+  LED_Z,
+  LED_LALT,
+
   LED_LCTL,
+  LED_LSFT,
+  LED_ESC,
+  LED_TAB,
 
   LED_TOTAL
 };
@@ -261,7 +251,7 @@ enum led_sequence {
 #   define PS2_CLOCK_PORT  PORTD
 #   define PS2_CLOCK_PIN   PIND
 #   define PS2_CLOCK_DDR   DDRD
-#   define PS2_CLOCK_BIT   1
+#   define PS2_CLOCK_BIT   3
 #   define PS2_DATA_PORT   PORTD
 #   define PS2_DATA_PIN    PIND
 #   define PS2_DATA_DDR    DDRD
@@ -335,7 +325,4 @@ enum led_sequence {
 #define PS2_USART_RX_DATA       UDR1
 #define PS2_USART_ERROR         (UCSR1A & ((1<<FE1) | (1<<DOR1) | (1<<UPE1)))
 #define PS2_USART_RX_VECT       USART1_RX_vect
-#endif
-
-
 #endif
